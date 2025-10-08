@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Detección de Fraude con Perceptrón (Bootstrap)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Paleta de Colores: #17408B (Azul Oscuro), #1B85BC (Azul Intermedio), #F39237 (Naranja Acento) */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f8f9fa; /* Fondo suave */
+        }
+        .container-custom {
+            max-width: 1100px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        header {
+            background-color: #17408B; /* Azul Oscuro */
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        header h1 {
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+        header h2 {
+            color: #1B85BC; /* Azul Intermedio */
+            font-weight: 700;
+        }
+        .section-title {
+            color: #17408B;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background-color: #F39237; /* Naranja Acento */
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        /* Estilo de Tarjetas y Movimiento */
+        .card-custom {
+            border: none;
+            border-left: 5px solid #1B85BC;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease-in-out;
+        }
+        .card-custom:hover {
+            transform: translateY(-5px); /* Efecto de elevación */
+        }
+        .card-title-custom {
+            color: #F39237; /* Naranja Acento */
+            font-weight: 700;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .list-unstyled li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            color: #495057;
+        }
+        .list-unstyled li::before {
+            content: '✓';
+            color: #1B85BC;
+            font-weight: 700;
+            position: absolute;
+            left: 0;
+        }
+        .highlight {
+            font-weight: 700;
+            color: #17408B;
+            background-color: #dbeaff;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        /* Estilo Modelos */
+        .model-box {
+            border: 2px solid #ced4da;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f7f9fc;
+            transition: all 0.3s;
+        }
+        .model-box:hover {
+            box-shadow: 0 0 10px rgba(27, 133, 188, 0.4);
+            border-color: #1B85BC;
+        }
+        .model-box h5 {
+            color: #17408B;
+            font-weight: 700;
+            border-bottom: 1px dashed #ced4da;
+            padding-bottom: 5px;
+        }
+
+        /* MEJOR MODELO (P2) */
+        .best-model-forced {
+            border: 3px solid #F39237; /* Borde Naranja */
+            background-color: #fff8f0; /* Fondo Naranja muy pálido */
+            box-shadow: 0 6px 15px rgba(243, 146, 55, 0.3);
+            position: relative;
+            animation: pulse-best 1.5s infinite alternate; /* Animación de pulsación */
+        }
+        @keyframes pulse-best {
+            from { box-shadow: 0 0 0 rgba(243, 146, 55, 0.5); }
+            to { box-shadow: 0 0 10px rgba(243, 146, 55, 0.8); }
+        }
+
+        /* Enlaces */
+        .btn-custom {
+            border-radius: 50px;
+            padding: 10px 25px;
+            font-weight: 700;
+            transition: transform 0.2s;
+        }
+        .btn-custom:hover {
+            transform: translateY(-2px);
+        }
+        .btn-github {
+            background-color: #343a40;
+            color: white;
+        }
+        .btn-docs {
+            background-color: #17408B;
+            color: white;
+        }
+        .link-box {
+            border: 1px dashed #1B85BC;
+            border-radius: 8px;
+            padding: 20px;
+            transition: background-color 0.3s;
+        }
+        .link-box:hover {
+            background-color: #f0f7ff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container bg-white p-5 container-custom">
+        <header class="mb-4 rounded-top-2">
+            <h1>IMPLEMENTACIÓN DEL PERCEPTRÓN PARA DETECCIÓN DE FRAUDE</h1>
+            <h2>Universidad Continental - Facultad de Ingeniería</h2>
+            <p class="project-info mt-2">Curso: **Construcción de Software** | NRC: 59116 | Fecha: 07/10/2025</p>
+        </header>
+
+        <section class="team-section text-center mb-5">
+            <h3 class="section-title">ESTUDIANTES</h3>
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                <span class="badge text-bg-secondary p-3 text-white shadow-sm" style="background-color: #1B85BC !important;">Salavaldez Cusi Gesu Francisco</span>
+                <span class="badge text-bg-secondary p-3 text-white shadow-sm" style="background-color: #1B85BC !important;">Lizarraga Condori Juan Yasser</span>
+                <span class="badge text-bg-secondary p-3 text-white shadow-sm" style="background-color: #1B85BC !important;">Prado Farfán Daniel Benjamyn</span>
+                <span class="badge text-bg-secondary p-3 text-white shadow-sm" style="background-color: #1B85BC !important;">Macedo Ancori Danny Ronaldo</span>
+                <span class="badge text-bg-secondary p-3 text-white shadow-sm" style="background-color: #1B85BC !important;">Rojas Canales Joseph Anibal</span>
+            </div>
+        </section>
+
+        <hr class="my-5">
+
+        <section class="infographic-section">
+            <h3 class="section-title">PROCESO Y EVALUACIÓN DE MODELOS (P1, P2, P3)</h3>
+
+            <div class="card card-custom mb-4">
+                <div class="card-body">
+                    <h4 class="card-title card-title-custom">1. Preprocesamiento de Datos (25%)</h4>
+                    <ul class="list-unstyled">
+                        <li><strong>Dataset:</strong> Credit Card Fraud Detection. Presenta un marcado **desbalance de clases**.</li>
+                        <li><strong>Transformación:</strong> Se aplicó <span class="highlight">StandardScaler</span> para normalizar la columna "Amount".</li>
+                        <li><strong>Estrategia de Balanceo:</strong> Se utilizó muestreo **estratificado** para mantener la proporción de clases.</li>
+                        <li><strong>División:</strong> 80% Entrenamiento y 20% Prueba.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card card-custom mb-4">
+                <div class="card-body">
+                    <h4 class="card-title card-title-custom">2. Implementación y Configuración (35%)</h4>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="model-box h-100">
+                                <h5>P1: Perceptrón Básico (Línea Base)</h5>
+                                <p><strong>Configuración:</strong> Tasa $\alpha=0.01$, 100 Épocas, Todas las Features.</p>
+                                <p class="text-muted">Resultado: Convergencia lenta y mostró mayor cantidad de falsos negativos.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="model-box best-model-forced h-100">
+                                <h5>P2: Tasa de Aprendizaje Modificada ($\alpha=0.1$)</h5>
+                                <p><strong>Configuración:</strong> Tasa $\alpha=0.1$, Todas las Features.</p>
+                                <p class="fw-bold text-success">Resultado Clave: <span class="highlight">Convergencia más rápida</span>. Mejoró el **accuracy y sensibilidad**.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="model-box h-100">
+                                <h5>P3: Reducción de Características</h5>
+                                <p><strong>Configuración:</strong> $\alpha=0.01$, 9 Variables Clave (Time, Amount, V4, V11, V12, V14, V16, V17, V18).</p>
+                                <p class="text-muted">Resultado: Mayor estabilidad, pero P2 superó el rendimiento global.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-custom mb-5" style="border-left-color: #17408B;">
+                <div class="card-body">
+                    <h4 class="card-title card-title-custom">3. Conclusión y Justificación del Modelo Idóneo (20%)</h4>
+                    <p class="fs-5">El **Perceptrón 2 (con $\alpha=0.1$)** es el modelo más idóneo.</p>
+                    <p>La **Justificación** clave es que el ajuste de la tasa de aprendizaje ($\alpha$) a **0.1 aceleró la convergencia** y **mejoró el rendimiento global** respecto al modelo base (P1), siendo el impacto más significativo en la detección de fraudes (Recall).</p>
+                    <p class="text-muted small mt-3">Cumplimiento de la Rúbrica: Preprocesamiento (25%), Implementación de 3 modelos (35%), Evaluación (20%), Análisis Coherente (20%).</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-5">
+
+        <section class="links-section text-center">
+            <h3 class="section-title">ENTREGABLES Y RECURSOS</h3>
+            <div class="d-flex justify-content-center gap-4 flex-wrap">
+                <div class="link-box">
+                    <h4>Código Fuente (Anexo)</h4>
+                    <p>Código fuente documentado de los tres prototipos.</p>
+                    <a href="https://github.com/YasserJxxxx/Examen_Parcial" class="btn btn-custom btn-github" target="_blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github me-2" viewBox="0 0 16 16">
+                          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.94.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38C13.71 14.53 16 11.54 16 8c0-4.42-3.58-8-8-8"/>
+                        </svg>
+                        Enlace a GitHub
+                    </a>
+                </div>
+                <div class="link-box">
+                    <h4>Documentación Técnica</h4>
+                    <p>Reporte de métricas (Accuracy, Recall, F1-score) y Matrices de Confusión.</p>
+                    <a href="https://docs.google.com/document/d/1EvE3iI12CVjhT4f5JmGjCPeS0F5kFPV1aN1HW4CT4Jc/edit?usp=sharing" class="btn btn-custom btn-docs" target="_blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-text-fill me-2" viewBox="0 0 16 16">
+                          <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 10a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4.5 12a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4.5 8a.5.5 0 0 1 0-1h5a.5.5 0 0 1 0 1z"/>
+                        </svg>
+                        Ver Documentación
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center text-muted small mt-5 pt-3 border-top">
+            <p>&copy; 2025 Construcción de Software - Universidad Continental. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
